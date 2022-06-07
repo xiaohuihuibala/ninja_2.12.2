@@ -3,7 +3,7 @@
     <div class="card">
       <div class="card-header">
         <div class="flex items-center justify-between">
-          <p class="card-title">Ninja提醒您</p>
+          <p class="card-title">Showmew提醒您</p>
         </div>
       </div>
       <div class="card-body text-base leading-6">
