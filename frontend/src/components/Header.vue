@@ -3,7 +3,7 @@
     <div class="header-wrapper">
       <div class="flex items-center">
         <Logo class="h-10 w-10" />
-        <p class="pl-3 select-none">Ninja</p>
+        <p class="pl-3 select-none">Ninja For 2.12+</p>
       </div>
     </div>
   </div>
