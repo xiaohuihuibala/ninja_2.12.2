@@ -94,7 +94,7 @@ Ninja 仅支持青龙面板2.12.2+
    **进容器内执行以下命令**
 
    ```bash
-   git clone https://github.com/Waikkii/waikiki_ninja.git /ql/ninja
+   git clone https://git.metauniverse-cn.com//https://github.com/showmexlq/Waikiki_ninja
    cd /ql/ninja/backend
    pnpm install
    cp .env.example .env # 如有需要, 修改.env
