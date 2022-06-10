@@ -2,7 +2,7 @@
   <div class="content">
     <div class="card">
       <div class="card-header">
-        <p class="card-title">个人中心</p>
+        <p class="text-2xl font-bold">个人中心</p>
       </div>
       <div class="card-body">
         <p>昵称：{{ nickName }}</p>
@@ -13,10 +13,10 @@
         <el-button type="danger" size="small" auto @click="delAccount">删除CK</el-button>
       </div>
     </div>
-    
+
     <div class="card">
       <div class="card-header">
-          <p class="card-title">WSCK 录入</p>
+          <p class="text-2xl font-bold">WSCK 录入</p>
             <div class="card-body text-base leading-6">
               <b>wskey有效期长达一年，请联系管理员确认使用，慎重！</b>
               <p>删WSCK在下方。</p>
@@ -37,10 +37,10 @@
         <el-button type="danger" size="small" auto @click="delWSCKAccount">删除WSCK</el-button>
       </div>
     </div>
-    
+
     <div class="card">
       <div class="card-header">
-        <p class="card-title">修改备注（CK和WSCK同步）</p>
+        <p class="text-2xl font-bold">修改备注（CK和WSCK同步）</p>
       </div>
       <div class="card-body text-center">
         <el-input v-model="remark" size="small" clearable class="my-4 w-full" />
@@ -49,10 +49,10 @@
         <el-button type="success" size="small" auto @click="changeremark">修改</el-button>
       </div>
     </div>
-    
+
     <div class="card">
       <div class="card-header">
-        <p class="card-title">常见活动位置</p>
+        <p class="text-2xl font-bold">常见活动位置</p>
         <span class="card-subtitle">下面是一些常见活动的位置</span>
       </div>
       <div class="card-body">
@@ -112,7 +112,7 @@ export default {
         data.nickName = userInfo.data.nickName
         data.timestamp = new Date(userInfo.data.timestamp).toLocaleString()
       }
-      
+
       if (wseid) {
         const userInfo = await getWSCKUserinfoAPI(wseid)
         if (!userInfo) {
@@ -138,6 +138,9 @@ export default {
       const body = await delAccountAPI({ eid })
       if (body.code !== 200) {
         ElMessage.error(body.message)
+        localStorage.removeItem('eid')
+        localStorage.removeItem('wseid')
+        router.push('/login')
       } else {
         ElMessage.success(body.message)
         setTimeout(() => {
@@ -145,7 +148,7 @@ export default {
         }, 1000)
       }
     }
-    
+
     const changeremark = async () => {
       const eid = localStorage.getItem('eid')
       const wseid = localStorage.getItem('wseid')
@@ -167,7 +170,7 @@ export default {
         }
       }
     }
-    
+
     const WSCKLogin = async () => {
       const wskey =
         data.jdwsck.match(/wskey=(.*?);/) &&
@@ -187,7 +190,7 @@ export default {
         ElMessage.error('wskey 解析失败，请检查后重试！')
       }
     }
-    
+
     const delWSCKAccount = async () => {
       const wseid = localStorage.getItem('wseid')
       const body = await WSCKDelaccountAPI({ wseid })
@@ -200,7 +203,7 @@ export default {
         }, 1000)
       }
     }
-    
+
     const openUrlWithJD = (url) => {
       const params = encodeURIComponent(
         `{"category":"jump","des":"m","action":"to","url":"${url}"}`

@@ -3,7 +3,7 @@
     <div class="card">
       <div class="card-header">
         <div class="flex items-center justify-between">
-          <p class="card-title">Showmew提醒您</p>
+          <p class="text-2xl font-bold">Hola!</p>
         </div>
       </div>
       <div class="card-body text-base leading-6">
@@ -13,13 +13,13 @@
         <p>且有效期不长，平均3-5天，因此需要及时更新。</p>
         <b>安全起见，WSCK可以在CK登录后录入，期限半永久。</b>
       </div>
-      <div class="card-footet"></div>
+      <div class="card-footer"></div>
     </div>
 
     <div v-if="showQR" class="card">
       <div class="card-header">
         <div class="flex items-center justify-between">
-          <p class="card-title">扫码登录</p>
+          <p class="text-2xl font-bold">扫码登录</p>
           <span class="ml-2 px-2 py-1 bg-gray-200 rounded-full font-normal text-xs">余量：{{ marginCount }}</span>
         </div>
         <span class="card-subtitle">
@@ -43,7 +43,7 @@
     <div v-if="showWSCK" class="card">
       <div class="card-header">
         <div class="flex items-center justify-between">
-          <p class="card-title">WSCK 录入</p>
+          <p class="text-2xl font-bold">WSCK 录入</p>
           <span class="ml-2 px-2 py-1 bg-gray-200 rounded-full font-normal text-xs">余量：{{ marginWSCKCount }}</span>
         </div>
         <div class="card-body text-base leading-6">
@@ -61,13 +61,13 @@
         <el-input v-model="jdwsck" placeholder="pin=xxxxxx;wskey=xxxxxxxxxx;" size="small" clearable class="my-4 w-full" />
         <el-button type="primary" size="small" round @click="WSCKLogin">录入</el-button>
       </div>
-      <div class="card-footet"></div>
+      <div class="card-footer"></div>
     </div>
 
     <div v-if="showCK" class="card">
       <div class="card-header">
         <div class="flex items-center justify-between">
-          <p class="card-title">CK 登录</p>
+          <p class="text-2xl font-bold">CK 登录</p>
           <span class="ml-2 px-2 py-1 bg-gray-200 rounded-full font-normal text-xs">余量：{{ marginCount }}</span>
         </div>
         <div class="card-body text-base leading-6">
@@ -79,10 +79,10 @@
         <span class="card-subtitle"> 请在下方输入您的 cookie 登录。 </span>
       </div>
       <div class="card-body text-center">
-        <el-input v-model="cookie" size="small" clearable class="my-4 w-full" />
+        <el-input v-model="cookie" placeholder="...pt_pin=xxxxxx;pt_token=xxxxxxxxxx;..." size="small" clearable class="my-4 w-full"/>
         <el-button type="primary" size="small" round @click="CKLogin">登录</el-button>
       </div>
-      <div class="card-footet"></div>
+      <div class="card-footer"></div>
     </div>
   </div>
 </template>
