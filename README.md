@@ -16,6 +16,8 @@
 
 ## 新
 
+新增支持青龙面板2.12+/删除CK后自动退出登录,一般我只用ck所以wskey还没测试过
+
 当前：增加备用接口（针对某些半黑号）
 
 新特性：支持Github Action前端编译并自动替换文件。Fork之后：Action->BuildAndCommit->Run workflow->Run workflow即可。
@@ -24,7 +26,7 @@
 
 Ninja 仅供学习参考使用，请于下载后的 24 小时内删除，本人不对使用过程中出现的任何问题负责，包括但不限于 `数据丢失` `数据泄露`。
 
-Ninja 仅支持 qinglong 2.8.2+
+Ninja 仅支持青龙面板2.12.2+
 
 [TG 频道](https://t.me/joinchat/sHKuteb_lfdjNmZl)
 
@@ -48,7 +50,7 @@ Ninja 仅支持 qinglong 2.8.2+
 
    例（docker-compose）：
 
-   ```diff
+   ```yaml
    version: "3"
    services:
      qinglong:
@@ -58,23 +60,17 @@ Ninja 仅支持 qinglong 2.8.2+
        tty: true
        ports:
          - 5700:5700
-   +      - 5701:5701
+         - 5701:5701
        environment:
          - ENABLE_HANGUP=true
          - ENABLE_WEB_PANEL=true
-       volumes:
-         - ./config:/ql/config
-         - ./log:/ql/log
-         - ./db:/ql/db
-         - ./repo:/ql/repo
-         - ./raw:/ql/raw
-         - ./scripts:/ql/scripts
-         - ./jbot:/ql/jbot
-   +      - ./ninja:/ql/ninja
+   volumes:
+         - ./qinglong/data:/ql/data
+         - ./qinglong/ninja:/ql/ninja
    ```
-
+   
    例（docker-run）：
-
+   
    ```diff
    docker run -dit \
      -v $PWD/ql/config:/ql/config \
@@ -92,7 +88,7 @@ Ninja 仅支持 qinglong 2.8.2+
      --restart unless-stopped \
      whyour/qinglong:latest
    ```
-
+   
 2. 进容器内执行以下命令
 
    **进容器内执行以下命令**
@@ -158,7 +154,6 @@ QL_URL=http://localhost:5700
 - `NINJA_PORT`: Ninja 运行端口（默认 `5701`）
 - `NINJA_NOTIFY`: 是否开启通知功能（默认 `true`）
 - `NINJA_UA`: 自定义 UA，默认为随机
-- 
 
 配置方式：
 
