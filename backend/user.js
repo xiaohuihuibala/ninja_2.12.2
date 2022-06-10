@@ -12,6 +12,8 @@ const {
     getEnvs,
     getEnvsCount,
     updateEnv,
+    enableEnv,
+    disableEnv,
     addWSCKEnv,
     delWSCKEnv,
     getWSCKEnvs,
@@ -247,6 +249,10 @@ module.exports = class User {
                 throw new UserError(body.message || '更新账户错误，请重试', 221, body.code || 200);
             }
             this.timestamp = body.data.timestamp;
+            const body2 = await enableEnv(this.eid);
+            if (body2.code !== 200) {
+                throw new UserError(body2.message || '启用账户错误，请重试', 221, body2.code || 200);
+            }
             message = `欢迎回来，${this.nickName}`;
             this.#sendNotify('Ninja 运行通知', `用户 ${this.nickName}(${decodeURIComponent(this.pt_pin)}) 已更新 CK`);
         }
@@ -265,10 +271,10 @@ module.exports = class User {
             throw new UserError('没有找到这个账户，重新登录试试看哦', 230, 200);
         }
         this.cookie = env.value;
-        this.timestamp = env.timestamp;
+        this.timestamp = env.updatedAt;
         const remarks = env.remarks;
         if (remarks) {
-            this.remark = remarks.match(/remark=(.*?);/) && remarks.match(/remark=(.*?);/)[1];
+            this.remark = remarks;
         }
         await this.#getNickname();
         return {
@@ -297,7 +303,6 @@ module.exports = class User {
         if (updateEnvBody.code !== 200) {
             throw new UserError('ck更新/上传备注出错，请重试', 241, 200);
         }
-
         return {
             message: 'ck更新/上传备注成功',
         };
@@ -312,6 +317,28 @@ module.exports = class User {
         this.#sendNotify('Ninja 运行通知', `用户 ${this.nickName}(${decodeURIComponent(this.pt_pin)}) 删号跑路了`);
         return {
             message: '账户已移除',
+        };
+    }
+
+    async enableCkByEid() {
+        const body = await enableEnv(this.eid);
+        if (body.code !== 200) {
+            throw new UserError(body.message || '启用CK错误，请重试', 240, body.code || 200);
+        }
+        this.#sendNotify('Ninja 运行通知', `用户 ${this.nickName}(${decodeURIComponent(this.pt_pin)}) 删号跑路了`);
+        return {
+            message: '账户对应CK已启用',
+        };
+    }
+
+    async disableCkByEid() {
+        const body = await disableEnv(this.eid);
+        if (body.code !== 200) {
+            throw new UserError(body.message || '禁用CK错误，请重试', 240, body.code || 200);
+        }
+        this.#sendNotify('Ninja 运行通知', `用户 ${this.nickName}(${decodeURIComponent(this.pt_pin)}) 删号跑路了`);
+        return {
+            message: '账户对应CK已禁用',
         };
     }
 
@@ -330,7 +357,7 @@ module.exports = class User {
             } else if (poolInfo.marginWSCKCount === 0) {
                 throw new UserError('本站已到达注册上限，你来晚啦', 211, 200);
             } else {
-                const remarks = `remark=${this.nickName};`;
+                const remarks = `${this.nickName}`;
                 const body = await addWSCKEnv(this.jdwsck, remarks);
                 if (body.code !== 200) {
                     throw new UserError(body.message || '添加账户错误，请重试', 220, body.code || 200);
@@ -395,7 +422,7 @@ module.exports = class User {
         }
         this.jdwsck = env.value;
 
-        const remarks = `remark=${this.remark};`;
+        const remarks = `${this.remark}`;
 
         const updateEnvBody = await updateWSCKEnv(this.jdwsck, this.wseid, remarks);
         if (updateEnvBody.code !== 200) {

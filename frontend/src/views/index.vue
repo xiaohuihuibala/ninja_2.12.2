@@ -9,8 +9,10 @@
         <p>更新时间：{{ timestamp }}</p>
       </div>
       <div class="card-footer">
-        <el-button size="small" auto @click="logout">退出登录</el-button>
         <el-button type="danger" size="small" auto @click="delAccount">删除CK</el-button>
+        <el-button type="warning" size="small" auto @click="disableCK">禁用CK</el-button>
+        <el-button type="success" size="small" auto @click="enableCK">启用CK</el-button>
+        <el-button size="small" auto @click="logout">退出登录</el-button>
       </div>
     </div>
 
@@ -43,7 +45,7 @@
         <p class="text-2xl font-bold">修改备注（CK和WSCK同步）</p>
       </div>
       <div class="card-body text-center">
-        <el-input v-model="remark" size="small" clearable class="my-4 w-full" />
+        <el-input v-model="remark" size="small" placeholder="{{ remark }}"  clearable class="my-4 w-full" />
       </div>
       <div class="card-footer">
         <el-button type="success" size="small" auto @click="changeremark">修改</el-button>
@@ -79,7 +81,7 @@
 </template>
 
 <script>
-import { getUserInfoAPI, delAccountAPI, remarkupdateAPI, WSCKLoginAPI, WSCKDelaccountAPI, remarkupdateWSCKAPI } from '@/api/index'
+import { getUserInfoAPI, enableCKAPI,disableCKAPI,delAccountAPI, remarkupdateAPI, WSCKLoginAPI, WSCKDelaccountAPI, remarkupdateWSCKAPI } from '@/api/index'
 import { onMounted, reactive, toRefs } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { ElMessage } from 'element-plus'
@@ -110,6 +112,7 @@ export default {
           return
         }
         data.nickName = userInfo.data.nickName
+        data.remark =userInfo.data.remark
         data.timestamp = new Date(userInfo.data.timestamp).toLocaleString()
       }
 
@@ -138,15 +141,41 @@ export default {
       const body = await delAccountAPI({ eid })
       if (body.code !== 200) {
         ElMessage.error(body.message)
-        localStorage.removeItem('eid')
-        localStorage.removeItem('wseid')
-        router.push('/login')
+        logout()
       } else {
         ElMessage.success(body.message)
         setTimeout(() => {
           logout()
         }, 1000)
       }
+    }
+
+    const disableCK = async () => {
+      const eid = localStorage.getItem('eid')
+      const body = await disableCKAPI({eid})
+      if (body.code !== 200) {
+        ElMessage.error(body.message)
+      } else {
+        ElMessage.success(body.message)
+        setTimeout(() => {
+          logout()
+        }, 1000)
+      }
+      await getInfo()
+    }
+
+    const enableCK = async () => {
+      const eid = localStorage.getItem('eid')
+      const body = await enableCKAPI({eid})
+      if (body.code !== 200) {
+        ElMessage.success(body.message)
+      } else {
+        ElMessage.error(body.message)
+        setTimeout(() => {
+          logout()
+        }, 1000)
+      }
+      await getInfo()
     }
 
     const changeremark = async () => {
@@ -169,6 +198,7 @@ export default {
           ElMessage.error(wsbody.message)
         }
       }
+      await getInfo()
     }
 
     const WSCKLogin = async () => {
@@ -274,6 +304,8 @@ export default {
       getInfo,
       logout,
       delAccount,
+      enableCK,
+      disableCK,
       changeremark,
       WSCKLogin,
       delWSCKAccount,

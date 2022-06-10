@@ -94,6 +94,23 @@ router.post('/api/delaccount', body(), async (ctx) => {
     ctx.body = {data};
 });
 
+router.post('/api/enableck', body(), async (ctx) => {
+    const body = ctx.request.body;
+    const eid = body.eid;
+    const user = new User({eid});
+    const data = await user.enableCkByEid();
+    ctx.body = {data};
+});
+
+router.post('/api/disableck', body(), async (ctx) => {
+    const body = ctx.request.body;
+    const eid = body.eid;
+    const user = new User({eid});
+    const data = await user.disableCkByEid();
+    ctx.body = {data};
+});
+
+
 router.post('/api/update/remark', body(), async (ctx) => {
     const body = ctx.request.body;
     const eid = body.eid;
