@@ -99,7 +99,7 @@ Ninja 仅支持青龙面板2.12.2+
    pnpm install
    cp .env.example .env # 如有需要, 修改.env
    pm2 start
-   cp sendNotify.js /ql/scripts/sendNotify.js
+   cp sendNotify.js /ql/data/scripts/sendNotify.js
    ```
 
 3. 将以下内容粘贴到 `extra.sh`（重启后自动更新并启动 Ninja）
@@ -110,7 +110,7 @@ Ninja 仅支持青龙面板2.12.2+
    git pull
    pnpm install
    pm2 start
-   cp sendNotify.js /ql/scripts/sendNotify.js
+   cp sendNotify.js /ql/data/scripts/sendNotify.js
    ```
 
 ### 容器外
@@ -123,8 +123,8 @@ Ninja 仅支持青龙面板2.12.2+
 git clone https://github.com/Waikkii/waikiki_ninja.git
 cd ninja/backend
 pnpm install
-# 复制 sendNotify.js 到容器内 scripts 目录，`qinglong` 为容器名
-sudo docker cp sendNotify.js qinglong:/ql/scripts/sendNotify.js
+# 复制 sendNotify.js 到容器内 data/scripts 目录，`qinglong` 为容器名
+sudo docker cp sendNotify.js qinglong:/ql/data/scripts/sendNotify.js
 cp .env.example .env
 # 修改env文件
 vi .env
