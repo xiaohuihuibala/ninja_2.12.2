@@ -14,6 +14,10 @@
 
 仓库地址：https://github.com/huiyi9420/ninja
 
+感谢：@showmexlq
+
+仓库地址：https://github.com/showmexlq/Waikiki_ninja
+
 ## 新
 新增启用/禁用CK功能 修复更新时间错误 remark输入框同步当前昵称
 
